@@ -15,8 +15,9 @@ model.compile(optimizer=tf.train.AdagradOptimizer(0.3),
               loss=tf.keras.losses.categorical_crossentropy,
               metrics=[tf.keras.metrics.categorical_accuracy])
 
-
 model.fit(mnist.train.images, mnist.train.labels, epochs=10, batch_size=32,
           validation_data=(mnist.test.images, mnist.test.labels))
 
+loss, accuracy = model.evaluate(mnist.test.images, mnist.test.labels)
+print("loss:%f, accuracy:%f" % (loss, accuracy))
 

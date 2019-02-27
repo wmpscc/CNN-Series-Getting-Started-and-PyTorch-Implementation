@@ -11,25 +11,27 @@
 ```python
 Train on 55000 samples, validate on 10000 samples
 Epoch 1/10
-55000/55000 [==============================] - 4s 80us/step - loss: 0.3947 - categorical_accuracy: 0.8772 - val_loss: 0.2011 - val_categorical_accuracy: 0.9406
+55000/55000 [==============================] - 4s 77us/step - loss: 0.3974 - categorical_accuracy: 0.8776 - val_loss: 0.2439 - val_categorical_accuracy: 0.9309
 Epoch 2/10
-55000/55000 [==============================] - 4s 74us/step - loss: 0.1759 - categorical_accuracy: 0.9474 - val_loss: 0.1594 - val_categorical_accuracy: 0.9515
+55000/55000 [==============================] - 3s 62us/step - loss: 0.1687 - categorical_accuracy: 0.9495 - val_loss: 0.1498 - val_categorical_accuracy: 0.9557
 Epoch 3/10
-55000/55000 [==============================] - 4s 68us/step - loss: 0.1340 - categorical_accuracy: 0.9598 - val_loss: 0.1454 - val_categorical_accuracy: 0.9573
+55000/55000 [==============================] - 3s 62us/step - loss: 0.1315 - categorical_accuracy: 0.9602 - val_loss: 0.1331 - val_categorical_accuracy: 0.9607
 Epoch 4/10
-55000/55000 [==============================] - 4s 65us/step - loss: 0.1109 - categorical_accuracy: 0.9655 - val_loss: 0.1270 - val_categorical_accuracy: 0.9635
+55000/55000 [==============================] - 3s 62us/step - loss: 0.1092 - categorical_accuracy: 0.9675 - val_loss: 0.1478 - val_categorical_accuracy: 0.9576
 Epoch 5/10
-55000/55000 [==============================] - 3s 63us/step - loss: 0.0942 - categorical_accuracy: 0.9713 - val_loss: 0.1233 - val_categorical_accuracy: 0.9651
+55000/55000 [==============================] - 3s 62us/step - loss: 0.0938 - categorical_accuracy: 0.9714 - val_loss: 0.1253 - val_categorical_accuracy: 0.9636
 Epoch 6/10
-55000/55000 [==============================] - 4s 64us/step - loss: 0.0825 - categorical_accuracy: 0.9744 - val_loss: 0.1190 - val_categorical_accuracy: 0.9667
+55000/55000 [==============================] - 4s 64us/step - loss: 0.0823 - categorical_accuracy: 0.9748 - val_loss: 0.1307 - val_categorical_accuracy: 0.9623
 Epoch 7/10
-55000/55000 [==============================] - 3s 63us/step - loss: 0.0717 - categorical_accuracy: 0.9774 - val_loss: 0.1205 - val_categorical_accuracy: 0.9668
+55000/55000 [==============================] - 4s 71us/step - loss: 0.0721 - categorical_accuracy: 0.9773 - val_loss: 0.1364 - val_categorical_accuracy: 0.9638
 Epoch 8/10
-55000/55000 [==============================] - 3s 61us/step - loss: 0.0630 - categorical_accuracy: 0.9801 - val_loss: 0.1256 - val_categorical_accuracy: 0.9662
+55000/55000 [==============================] - 3s 62us/step - loss: 0.0627 - categorical_accuracy: 0.9804 - val_loss: 0.1169 - val_categorical_accuracy: 0.9664
 Epoch 9/10
-55000/55000 [==============================] - 3s 62us/step - loss: 0.0573 - categorical_accuracy: 0.9813 - val_loss: 0.1226 - val_categorical_accuracy: 0.9676
+55000/55000 [==============================] - 4s 64us/step - loss: 0.0547 - categorical_accuracy: 0.9830 - val_loss: 0.1265 - val_categorical_accuracy: 0.9668
 Epoch 10/10
-55000/55000 [==============================] - 3s 61us/step - loss: 0.0519 - categorical_accuracy: 0.9837 - val_loss: 0.1188 - val_categorical_accuracy: 0.9691
+55000/55000 [==============================] - 4s 69us/step - loss: 0.0504 - categorical_accuracy: 0.9840 - val_loss: 0.1222 - val_categorical_accuracy: 0.9697
+10000/10000 [==============================] - 0s 30us/step
+loss:0.122211, accuracy:0.969700
 ```
 
 # tf.keras
