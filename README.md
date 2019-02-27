@@ -6,7 +6,7 @@
 - ### [Multi-Layer Perceptron](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/MLP)
 - ### [LeNet-5](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/LeNet)
 - ### [AlexNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/AlexNet)
-- ### VGG
+- ### [VGG](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/VGG)
 - ### GoogLeNet
 - ### ResNet
 - ### Inception
