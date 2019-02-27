@@ -25,6 +25,9 @@ model.add(layers.Dense(4096, activation=tf.keras.activations.relu))
 model.add(layers.Dropout(0.5))
 model.add(layers.Dense(1000, activation=tf.keras.activations.softmax))
 
+filenames = ["/var/data/file1.tfrecord", "/var/data/file2.tfrecord"]
+dataset = tf.data.TFRecordDataset(filenames)
+
 model.fit(X_train, y_train, epochs=10, batch_size=32,
           validation_data=(X_test, y_test))
 
