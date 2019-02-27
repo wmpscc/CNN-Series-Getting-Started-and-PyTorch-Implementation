@@ -3,7 +3,7 @@
 > 本项目目的是使用TF高级API实现从2012年LeNet到2016年的Inception ResNet神经网络。
 
 # Image Classification
-- ### [Multi-Layer Perceptron](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/blob/master/MLP/README.md)
+- ### [Multi-Layer Perceptron](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/MLP)
 - ### [LeNet-5](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/LeNet)
 - ### [AlexNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/AlexNet)
 - ### VGG

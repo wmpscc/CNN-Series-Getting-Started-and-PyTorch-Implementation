@@ -3,13 +3,30 @@
 import tensorflow as tf
 import random
 import os
+from tqdm import tqdm
 import cv2
 
+trainPaths = list()
+testPaths = list()
 classes = list()
-f = open("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/meta/classes.txt")
-lines = f.readlines()
-for line in lines:
-    classes.append(line.strip('\n'))
+
+
+def load_files():
+    f = open("/media/data/oldcopy/PythonProject/Food101/food-101/meta/classes.txt")
+    lines = f.readlines()
+    for line in lines:
+        classes.append(line.strip('\n'))
+    f.close()
+    f = open("/media/data/oldcopy/PythonProject/Food101/food-101/meta/train.txt")
+    lines = f.readlines()
+    for line in lines:
+        trainPaths.append(line.strip('\n'))
+    f.close()
+    f = open("/media/data/oldcopy/PythonProject/Food101/food-101/meta/test.txt")
+    lines = f.readlines()
+    for line in lines:
+        testPaths.append(line.strip('\n'))
+    f.close()
 
 
 # 生成整数型的属性
@@ -25,41 +42,39 @@ def _bytes_feature(value):
 def transform_label(name):
     return classes.index(name)
 
-def creatData(HOME_PATH):
-    totalFileList = list()
-    filenameTrain = '/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/TFRecord/train.tfrecords'
-    filenameTest = '/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/TFRecord/test.tfrecords'
-    writerTrain = tf.python_io.TFRecordWriter(filenameTrain)
-    writerTest = tf.python_io.TFRecordWriter(filenameTest)
-    for folder in classes:
-        filePath = os.path.join(HOME_PATH, folder)
-        imageList = os.listdir(filePath)
-        for imgName in imageList:
-            imgPath = os.path.join(filePath, imgName)
-            totalFileList.append(imgPath)
-    randIndexList = random.sample(range(0, len(totalFileList)), len(totalFileList))
-    t = 0
-    for i in randIndexList:
-        path = totalFileList[i]
-        print(path)
-        raw = cv2.imread(path)
-        res = cv2.resize(raw, (227, 227), interpolation=cv2.INTER_CUBIC)
-        image_raw = res.tostring()
-        label = transform_label(path.split('/')[2])
-        example = tf.train.Example(features=tf.train.Features(feature={
-            'label': _int64_feature(label),
-            'image_raw': _bytes_feature(image_raw)
-        }))
-        if t < len(totalFileList) * 0.8:
-            writerTrain.write(example.SerializeToString())
-        else:
-            writerTest.write(example.SerializeToString())
-        t += 1
-    writerTest.close()
+
+def probuf(label, image_raw):
+    example = tf.train.Example(features=tf.train.Features(feature={
+        'label': _int64_feature(label),
+        'image_raw': _bytes_feature(image_raw)
+    }))
+    return example.SerializeToString()
+
+
+def writerRecord(save_path, HOME_PATH):
+    writerTrain = tf.python_io.TFRecordWriter(os.path.join(save_path, "train.tfrecords"))
+    writerTest = tf.python_io.TFRecordWriter(os.path.join(save_path, "test.tfrecords"))
+    randIndexTrain = random.sample(range(0, len(trainPaths)), len(trainPaths))
+    randIndexTest = random.sample(range(0, len(testPaths)), len(testPaths))
+
+    for i in tqdm(randIndexTrain, "Start write train tfrecords"):
+        image_string = tf.read_file(os.path.join(HOME_PATH, trainPaths[i] + ".jpg"))
+        image_string = sess.run(image_string)
+        label = trainPaths[i].split("/")[0]
+        label = transform_label(label)
+        writerTrain.write(probuf(label, image_string))
     writerTrain.close()
-
-
+    for i in tqdm(randIndexTest, "Start write test tfrecords"):
+        image_string = tf.read_file(os.path.join(HOME_PATH, testPaths[i] + ".jpg"))
+        image_string = sess.run(image_string)
+        label = testPaths[i].split("/")[0]
+        label = transform_label(label)
+        writerTest.write(probuf(label, image_string))
+    writerTest.close()
 
 
 if __name__ == '__main__':
-    creatData('/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/images/')
+    sess = tf.InteractiveSession()
+    load_files()
+    writerRecord("/media/data/oldcopy/PythonProject/Food101/TFRecord",
+                 "/media/data/oldcopy/PythonProject/Food101/food-101/images")
