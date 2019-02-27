@@ -3,7 +3,7 @@
 > 本项目目的是使用TF高级API实现从2012年LeNet到2016年的Inception ResNet神经网络。
 
 # Image Classification
-
+- ### Multi-Layer Perceptron
 - ### LeNet
 - ### AlexNet
 - ### VGG
