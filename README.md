@@ -5,7 +5,7 @@
 # Image Classification
 - ### [Multi-Layer Perceptron](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/blob/master/MLP/README.md)
 - ### [LeNet-5](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/LeNet)
-- ### AlexNet
+- ### [AlexNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/AlexNet)
 - ### VGG
 - ### GoogLeNet
 - ### ResNet
