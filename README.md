@@ -7,9 +7,11 @@
 - ### [LeNet-5](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/LeNet)
 - ### [AlexNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/AlexNet)
 - ### [VGG](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/VGG)
+- ### NIN
 - ### [GoogLeNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/GoogLeNet)
-- ### ResNet
 - ### Inception
+- ### MSRANet
+- ### ResNet
 - ### Inception ResNet
 
 
