@@ -3,6 +3,7 @@
 import tensorflow as tf
 import random
 import os
+import cv2
 from tqdm import tqdm
 import threading
 
@@ -12,17 +13,17 @@ classes = list()
 
 
 def load_files():
-    f = open("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/meta/classes.txt")
+    f = open("/home/heolis/Data/food-101/meta/classes.txt")
     lines = f.readlines()
     for line in lines:
         classes.append(line.strip('\n'))
     f.close()
-    f = open("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/meta/train.txt")
+    f = open("/home/heolis/Data/food-101/meta/train.txt")
     lines = f.readlines()
     for line in lines:
         trainPaths.append(line.strip('\n'))
     f.close()
-    f = open("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/meta/test.txt")
+    f = open("/home/heolis/Data/food-101/meta/test.txt")
     lines = f.readlines()
     for line in lines:
         testPaths.append(line.strip('\n'))
@@ -51,22 +52,26 @@ def probuf(label, image_raw):
     return example.SerializeToString()
 
 
-def writerRecord(save_path, HOME_PATH, coord, t_id):
+def writerRecord(save_path, HOME_PATH, coord=None, t_id=0):
     writerTrain = tf.python_io.TFRecordWriter(os.path.join(save_path, "train" + str(t_id) + ".tfrecords"))
     writerTest = tf.python_io.TFRecordWriter(os.path.join(save_path, "test" + str(t_id) + ".tfrecords"))
     randIndexTrain = random.sample(range(0, len(trainPaths)), len(trainPaths))
 
-    size = int(len(randIndexTrain) / 1)
+    size = int(len(randIndexTrain) / 4)
     randIndexTrain = randIndexTrain[t_id * size: (t_id + 1) * size]
 
     randIndexTest = random.sample(range(0, len(testPaths)), len(testPaths))
-    size = int(len(randIndexTest) / 1)
+    size = int(len(randIndexTest) / 4)
     randIndexTest = randIndexTest[t_id * size: (t_id + 1) * size]
 
     sess = tf.Session()
     for i in tqdm(randIndexTrain, "train:"):
-        image_string = tf.read_file(os.path.join(HOME_PATH, trainPaths[i] + ".jpg"))
-        image_string = sess.run(image_string)
+        # image_string = tf.read_file(os.path.join(HOME_PATH, trainPaths[i] + ".jpg"))
+        # image_string = sess.run(image_string)
+
+        image_string = cv2.imread(os.path.join(HOME_PATH, trainPaths[i] + ".jpg"))
+        image_string = image_string.tostring()
+
         label = trainPaths[i].split("/")[0]
         label = transform_label(label)
         writerTrain.write(probuf(label, image_string))
@@ -78,16 +83,18 @@ def writerRecord(save_path, HOME_PATH, coord, t_id):
         label = transform_label(label)
         writerTest.write(probuf(label, image_string))
     writerTest.close()
-    coord.request_stop()
+
+    # coord.request_stop()
 
 
 if __name__ == '__main__':
     # sess = tf.InteractiveSession()
     coord = tf.train.Coordinator()
     load_files()
-    threads = [threading.Thread(target=writerRecord, args=("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/TFRecord",
-                                                           "/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/images",
-                                                           coord, i)) for i in range(1)]
-    for t in threads:
-        t.start()
-    coord.join(threads)
+    # threads = [threading.Thread(target=writerRecord, args=("/home/heolis/Data/food-101/TFRecord",
+    #                                                        "/home/heolis/Data/food-101/images",
+    #                                                        coord, i)) for i in range(4)]
+    # for t in threads:
+    #     t.start()
+    # coord.join(threads)
+    writerRecord("/home/heolis/Data/food-101/TFRecord", "/home/heolis/Data/food-101/images")
