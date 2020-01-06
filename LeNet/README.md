@@ -1,10 +1,10 @@
 > 注意：论文中使用的输入图片的shape是`32*32*1`，而代码中使用的是`28*28*1`。
 # LeNet
 LeNet是一种典型的卷积神经网络的结构，由Yann LeCun发明。它的网路结构如下图：
-![LeNet](http://daweiwong.com/2017/03/07/MNIST%20LeNet-5/LeNet-5-structure.png)
+![LeNet](img/LeNet-5-structure.png)
 
 代码实现参考下图结构：
-![LeNet model](https://ask.qcloudimg.com/http-save/yehe-1881084/f3xo7y48br.png?imageView2/2/w/1620)
+![LeNet model](img/f3xo7y48br.png)
 LeNet-5网络是针对灰度图进行训练的，输入图像大小为`32*32*1`
 
 # Result

@@ -1,4 +1,4 @@
-# CNN-Series-Getting-Started-and-TensorFlow-Implementation
+# CNN-Series-Getting-Started-and-PyTorch-Implementation
 ![CNN发展历史](doc_img/CNN_3.png)
 > 本项目目的是使用TF高级API实现从2012年LeNet到2016年的Inception ResNet神经网络。
 
@@ -9,8 +9,7 @@
 - ### [VGG](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/VGG)
 - ### [NIN](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/NIN)
 - ### [GoogLeNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/GoogLeNet)
-- ### ResNet
-- ### Inception ResNet
-- ### DenseNet
+- ### [ResNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-PyTorch-Implementation/blob/master/ResNet/README.md)
+- ### [DenseNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-PyTorch-Implementation/blob/master/DenseNet/README.md)
 
 > 实现方法可能与原始论文有出入，如有错误欢迎指正！
