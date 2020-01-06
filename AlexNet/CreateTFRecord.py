@@ -1,93 +1,71 @@
-#!/usr/bin/env python
-# _*_coding:utf-8_*_
+'''
+利用tf.Example创建TFRecords
+'''
 import tensorflow as tf
-import random
+import numpy as np
+import IPython.display as display
+import cv2
 import os
-from tqdm import tqdm
-import threading
-
-trainPaths = list()
-testPaths = list()
-classes = list()
 
 
-def load_files():
-    f = open("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/meta/classes.txt")
-    lines = f.readlines()
-    for line in lines:
-        classes.append(line.strip('\n'))
-    f.close()
-    f = open("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/meta/train.txt")
-    lines = f.readlines()
-    for line in lines:
-        trainPaths.append(line.strip('\n'))
-    f.close()
-    f = open("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/meta/test.txt")
-    lines = f.readlines()
-    for line in lines:
-        testPaths.append(line.strip('\n'))
-    f.close()
-
-
-# 生成整数型的属性
-def _int64_feature(value):
-    return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
-
-
-# 生成字符串型的属性
+# The following functions can be used to convert a value to a type compatible with tf.Example.
 def _bytes_feature(value):
+    """Returns a bytes_list from a string / byte."""
+    if isinstance(value, type(tf.constant(0))):
+        value = value.numpy()  # BytesList won't unpack a string from an EagerTensor.
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
 
-def transform_label(name):
-    return classes.index(name)
+def _float_feature(value):
+    """Returns a float_list from a float / double."""
+    return tf.train.Feature(float_list=tf.train.FloatList(value=[value]))
 
 
-def probuf(label, image_raw):
-    example = tf.train.Example(features=tf.train.Features(feature={
+def _int64_feature(value):
+    """Returns an int64_list from a bool / enum / int / uint."""
+    return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
+
+
+def get_label(folderName):
+    label_dict = {
+        'Sample001': 0,
+        'Sample002': 1,
+        'Sample003': 2,
+        'Sample004': 3,
+        'Sample005': 4,
+        'Sample006': 5,
+        'Sample007': 6,
+        'Sample008': 7,
+        'Sample009': 8,
+        'Sample010': 9,
+        'Sample011': 10,
+    }
+    return label_dict[folderName]
+
+
+def image_example(image_string, label):
+    feature = {
         'label': _int64_feature(label),
-        'image_raw': _bytes_feature(image_raw)
-    }))
-    return example.SerializeToString()
+        'image_raw': _bytes_feature(image_string),
+    }
+    return tf.train.Example(features=tf.train.Features(feature=feature))
 
 
-def writerRecord(save_path, HOME_PATH, coord, t_id):
-    writerTrain = tf.python_io.TFRecordWriter(os.path.join(save_path, "train" + str(t_id) + ".tfrecords"))
-    writerTest = tf.python_io.TFRecordWriter(os.path.join(save_path, "test" + str(t_id) + ".tfrecords"))
-    randIndexTrain = random.sample(range(0, len(trainPaths)), len(trainPaths))
-
-    size = int(len(randIndexTrain) / 1)
-    randIndexTrain = randIndexTrain[t_id * size: (t_id + 1) * size]
-
-    randIndexTest = random.sample(range(0, len(testPaths)), len(testPaths))
-    size = int(len(randIndexTest) / 1)
-    randIndexTest = randIndexTest[t_id * size: (t_id + 1) * size]
-
-    sess = tf.Session()
-    for i in tqdm(randIndexTrain, "train:"):
-        image_string = tf.read_file(os.path.join(HOME_PATH, trainPaths[i] + ".jpg"))
-        image_string = sess.run(image_string)
-        label = trainPaths[i].split("/")[0]
-        label = transform_label(label)
-        writerTrain.write(probuf(label, image_string))
-    writerTrain.close()
-    for i in tqdm(randIndexTest, "test"):
-        image_string = tf.read_file(os.path.join(HOME_PATH, testPaths[i] + ".jpg"))
-        image_string = sess.run(image_string)
-        label = testPaths[i].split("/")[0]
-        label = transform_label(label)
-        writerTest.write(probuf(label, image_string))
-    writerTest.close()
-    coord.request_stop()
+def make_tfrecords(HOME_PATH):
+    trainPath = 'train.tfrecords'
+    folderList = os.listdir(HOME_PATH)
+    with tf.io.TFRecordWriter(trainPath) as writer:
+        for folder in folderList:
+            label = get_label(folder)
+            current_folder = os.path.join(HOME_PATH, folder)
+            imageList = os.listdir(current_folder)
+            print(current_folder)
+            for imgPath in imageList:
+                img = cv2.imread(os.path.join(current_folder, imgPath))[:, :, ::-1]
+                image_string = cv2.imencode('.jpg', img)[1].tostring()
+                tf_example = image_example(image_string, label)
+                writer.write(tf_example.SerializeToString())
 
 
 if __name__ == '__main__':
-    # sess = tf.InteractiveSession()
-    coord = tf.train.Coordinator()
-    load_files()
-    threads = [threading.Thread(target=writerRecord, args=("/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/TFRecord",
-                                                           "/media/heolis/967EC257F5104FE6/oldcopy/PythonProject/Food101/food-101/images",
-                                                           coord, i)) for i in range(1)]
-    for t in threads:
-        t.start()
-    coord.join(threads)
+    make_tfrecords('../dataset/Fnt10/')

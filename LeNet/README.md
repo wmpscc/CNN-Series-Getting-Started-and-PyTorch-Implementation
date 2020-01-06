@@ -9,29 +9,27 @@ LeNet-5网络是针对灰度图进行训练的，输入图像大小为`32*32*1`
 
 # Result
 ``` python
-Train on 55000 samples, validate on 10000 samples
-Epoch 1/10
-55000/55000 [==============================] - 6s 112us/step - loss: 0.4190 - categorical_accuracy: 0.8775 - val_loss: 0.3363 - val_categorical_accuracy: 0.9057
-Epoch 2/10
-55000/55000 [==============================] - 5s 86us/step - loss: 0.3558 - categorical_accuracy: 0.8982 - val_loss: 0.3273 - val_categorical_accuracy: 0.9066
-Epoch 3/10
-55000/55000 [==============================] - 5s 83us/step - loss: 0.3455 - categorical_accuracy: 0.9012 - val_loss: 0.3228 - val_categorical_accuracy: 0.9058
-Epoch 4/10
-55000/55000 [==============================] - 5s 82us/step - loss: 0.3394 - categorical_accuracy: 0.9030 - val_loss: 0.3241 - val_categorical_accuracy: 0.9103
-Epoch 5/10
-55000/55000 [==============================] - 5s 83us/step - loss: 0.3324 - categorical_accuracy: 0.9050 - val_loss: 0.3210 - val_categorical_accuracy: 0.9087
-Epoch 6/10
-55000/55000 [==============================] - 5s 83us/step - loss: 0.3303 - categorical_accuracy: 0.9046 - val_loss: 0.3125 - val_categorical_accuracy: 0.9119
-Epoch 7/10
-55000/55000 [==============================] - 5s 83us/step - loss: 0.3265 - categorical_accuracy: 0.9071 - val_loss: 0.3005 - val_categorical_accuracy: 0.9158
-Epoch 8/10
-55000/55000 [==============================] - 5s 83us/step - loss: 0.3229 - categorical_accuracy: 0.9087 - val_loss: 0.3090 - val_categorical_accuracy: 0.9114
-Epoch 9/10
-55000/55000 [==============================] - 5s 83us/step - loss: 0.3199 - categorical_accuracy: 0.9092 - val_loss: 0.3102 - val_categorical_accuracy: 0.9128
-Epoch 10/10
-55000/55000 [==============================] - 5s 83us/step - loss: 0.3189 - categorical_accuracy: 0.9101 - val_loss: 0.2883 - val_categorical_accuracy: 0.9173
-10000/10000 [==============================] - 0s 36us/step
-loss:0.288287, accuracy:0.917300
+training on  cuda
+epoch 1, loss 1.8365, train acc 0.329, test acc 0.596, time  4.9 sec
+epoch 2, loss 0.4777, train acc 0.634, test acc 0.680, time  4.3 sec
+epoch 3, loss 0.2691, train acc 0.699, test acc 0.694, time  5.8 sec
+epoch 4, loss 0.1847, train acc 0.721, test acc 0.727, time  4.4 sec
+epoch 5, loss 0.1378, train acc 0.736, test acc 0.739, time  3.9 sec
+epoch 6, loss 0.1077, train acc 0.748, test acc 0.749, time  3.9 sec
+epoch 7, loss 0.0879, train acc 0.759, test acc 0.765, time  3.9 sec
+epoch 8, loss 0.0734, train acc 0.770, test acc 0.774, time  4.0 sec
+epoch 9, loss 0.0630, train acc 0.779, test acc 0.779, time  4.0 sec
+epoch 10, loss 0.0548, train acc 0.787, test acc 0.785, time  4.0 sec
+epoch 11, loss 0.0482, train acc 0.795, test acc 0.786, time  4.1 sec
+epoch 12, loss 0.0430, train acc 0.802, test acc 0.797, time  4.3 sec
+epoch 13, loss 0.0385, train acc 0.809, test acc 0.807, time  4.0 sec
+epoch 14, loss 0.0347, train acc 0.816, test acc 0.800, time  4.0 sec
+epoch 15, loss 0.0317, train acc 0.822, test acc 0.810, time  4.3 sec
+epoch 16, loss 0.0289, train acc 0.827, test acc 0.814, time  4.1 sec
+epoch 17, loss 0.0268, train acc 0.831, test acc 0.821, time  4.2 sec
+epoch 18, loss 0.0247, train acc 0.836, test acc 0.824, time  4.1 sec
+epoch 19, loss 0.0231, train acc 0.838, test acc 0.823, time  4.2 sec
+epoch 20, loss 0.0216, train acc 0.839, test acc 0.826, time  4.2 sec
 ```
 
 ### 参考文章

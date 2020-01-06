@@ -1,56 +1,70 @@
 import tensorflow as tf
-from tensorflow._api.v1.keras import layers
+from tensorflow.python.keras import layers
+
+tf.executing_eagerly()
 
 
-# Food 101 数据集
+def _argment_helper(image):
+    image = tf.cast(image, tf.float32)
+    image = tf.reshape(image, [128, 128, 3])
+    image = tf.image.resize(image, [227, 227])
+    image = tf.math.divide(image, tf.constant(255.0))
+    return image
 
-def _parse_function(filename, label):
-    image_string = tf.read_file(filename)
-    image_decoded = tf.image.decode_jpeg(image_string)
-    image_resized = tf.image.resize_images(image_decoded, [227, 227, 3])
-    return image_resized, label
+
+def parse_fn(example_proto):
+    "Parse TFExample records and perform simple data augmentation."
+    image_feature_description = {
+        'label': tf.io.FixedLenFeature([], tf.int64),
+        'image_raw': tf.io.FixedLenFeature([], tf.string),
+    }
+    parsed = tf.io.parse_single_example(example_proto, image_feature_description)
+    image = tf.image.decode_jpeg(parsed['image_raw'], 3)
+    image = _argment_helper(image)
+    parsed['label'] = tf.cast(parsed['label'], tf.int64)
+    y = tf.one_hot(parsed['label'], 10)
+    return image, y
+
+
+def input_fn():
+    dataset = tf.data.TFRecordDataset('train.tfrecords')
+    dataset = dataset.shuffle(buffer_size=512)
+    dataset = dataset.map(map_func=parse_fn, num_parallel_calls=2)
+    dataset = dataset.prefetch(buffer_size=62)
+    dataset = dataset.batch(batch_size=32)
+    return dataset
 
 
 def alex_net():
     model = tf.keras.Sequential()
     model.add(layers.Conv2D(filters=96, kernel_size=(11, 11), strides=(4, 4), padding='valid',
-                            activation='relu'))
+                            activation='relu', input_shape=(227, 227, 3), kernel_initializer='uniform'))
     model.add(layers.MaxPool2D(pool_size=(3, 3), strides=(2, 2), padding='valid'))
     model.add(layers.BatchNormalization())
     model.add(layers.Conv2D(filters=256, kernel_size=(5, 5), strides=(1, 1), padding='same',
-                            activation='relu'))
+                            activation='relu', kernel_initializer='uniform'))
     model.add(layers.MaxPool2D(pool_size=(3, 3), strides=(2, 2), padding='valid'))
     model.add(layers.BatchNormalization())
     model.add(layers.Conv2D(filters=384, kernel_size=(3, 3), strides=(1, 1), padding='valid',
-                            activation='relu'))
+                            activation='relu', kernel_initializer='uniform'))
     model.add(layers.Conv2D(filters=384, kernel_size=(3, 3), strides=(1, 1), padding='valid',
-                            activation='relu'))
+                            activation='relu', kernel_initializer='uniform'))
     model.add(layers.Conv2D(filters=256, kernel_size=(3, 3), strides=(1, 1), padding='valid',
-                            activation='relu'))
+                            activation='relu', kernel_initializer='uniform'))
     model.add(layers.MaxPool2D(pool_size=(3, 3), strides=(2, 2)))
     model.add(layers.Flatten())
     model.add(layers.Dense(4096, activation=tf.keras.activations.relu))
     model.add(layers.Dropout(0.5))
     model.add(layers.Dense(4096, activation=tf.keras.activations.relu))
     model.add(layers.Dropout(0.5))
-    model.add(layers.Dense(1000, activation=tf.keras.activations.softmax))
+    model.add(layers.Dense(10, activation=tf.keras.activations.softmax))
     return model
 
 
-filenames = ["/media/data/oldcopy/PythonProject/Food101/TFRecord/train.tfrecords"]
-trainSet = tf.data.TFRecordDataset(filenames)
-trainSet = trainSet.map(_parse_function)
-trainSet = trainSet.repeat()
-trainSet = trainSet.batch(32)
-
-filenames = ["/media/data/oldcopy/PythonProject/Food101/TFRecord/test.tfrecords"]
-testSet = tf.data.TFRecordDataset(filenames)
-testSet = testSet.map(_parse_function)
-testSet = testSet.repeat()
-testSet = testSet.batch(32)
-
 model = alex_net()
-model.fit(trainSet, epochs=10, batch_size=32, validation_data=testSet)
+model.compile(optimizer=tf.keras.optimizers.SGD(0.1),
+              loss='categorical_crossentropy', metrics=['accuracy'])
+parsed_dataset = input_fn()
 
-loss, accuracy = model.evaluate(testSet)
-print("loss:%f, accuracy:%f" % (loss, accuracy))
+model.fit(parsed_dataset, epochs=20, steps_per_epoch=100, validation_data=parsed_dataset)
+print(model.evaluate(input_fn()))

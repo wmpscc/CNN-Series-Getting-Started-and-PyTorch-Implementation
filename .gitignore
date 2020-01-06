@@ -1,4 +1,4 @@
-MNIST_data
+dataset/*
 # Created by https://www.gitignore.io/api/python,pycharm,jupyternotebook
 # Edit at https://www.gitignore.io/?templates=python,pycharm,jupyternotebook
 
@@ -25,6 +25,7 @@ MNIST_data
 .idea/**/contentModel.xml
 
 # Sensitive or high-churn files
+.idea
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml

@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow._api.v1.keras import layers
+from tensorflow.keras import layers
 
 
 # Food 101 数据集
