@@ -1,6 +1,6 @@
 # CNN-Series-Getting-Started-and-PyTorch-Implementation
 ![CNN发展历史](doc_img/CNN_3.png)
-> 本项目目的是使用TF高级API实现从2012年LeNet到2016年的Inception ResNet神经网络。
+> 本项目目的是使用PyTorch实现从2012年LeNet到2016年的DenseNet卷积神经网络。
 
 # Image Classification
 - ### [Multi-Layer Perceptron](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/MLP)
