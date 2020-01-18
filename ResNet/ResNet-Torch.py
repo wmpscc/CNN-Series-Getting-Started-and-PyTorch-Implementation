@@ -101,6 +101,8 @@ if __name__ == '__main__':
             X = X.to(device)
             y = y.to(device)
             y_pred = resnet(X)
+
+            print(y_pred.size(), y.size())
             loss = lossFN(y_pred, y)
 
             optimizer.zero_grad()

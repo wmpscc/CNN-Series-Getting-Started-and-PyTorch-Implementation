@@ -11,5 +11,9 @@
 - ### [GoogLeNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-TensorFlow-Implementation/tree/master/GoogLeNet)
 - ### [ResNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-PyTorch-Implementation/blob/master/ResNet/README.md)
 - ### [DenseNet](https://github.com/wmpscc/CNN-Series-Getting-Started-and-PyTorch-Implementation/blob/master/DenseNet/README.md)
+- ### [总结](./Classification.md)
 
+# Detection
+- ### [SSD](./SSD/README.md)
+- ### [总结](./Detection.md)
 > 实现方法可能与原始论文有出入，如有错误欢迎指正！

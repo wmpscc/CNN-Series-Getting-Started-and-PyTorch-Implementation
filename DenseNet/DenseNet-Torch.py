@@ -112,8 +112,10 @@ if __name__ == "__main__":
         batch_count = 0
         n = 0
         for X, y in tqdm(trainDL):
+            print(X.shape)
             X = X.to(device)
             y = y.to(device)
+
             y_pred = denseNet(X)
             loss = lossFN(y_pred, y)
 

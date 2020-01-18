@@ -7,7 +7,7 @@
 - **5.超参数**：SGD，学习率0.01，batch size是128，momentum为0.9，weight decay为0.0005（论文有个权重更新公式），每当validation error不再下降时，学习率除以10。权重初始化用（0，0.01）的高斯分布，二四五卷积层和全连接层的bias初始化为1（给relu提供正值利于加速前期训练），其余bias初始化为0。
 
 - #### AlexNet Architecture
-![arch](architecture.png)
+![arch](img/architecture.png)
 
 - #### AlexNet 每层的超参数及参数数量
 ![alex parma](https://upload-images.jianshu.io/upload_images/1689929-78bfb344b7f63729.png?imageMogr2/auto-orient/strip%7CimageView2/2)
