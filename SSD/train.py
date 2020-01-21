@@ -6,7 +6,6 @@ from SSD.utils import MultiBoxTarget
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-
 def calc_loss(cls_preds, cls_labels, bbox_preds, bbox_labels, bbox_masks):
     # print(cls_preds.shape, cls_labels.shape, bbox_preds.shape, bbox_labels.shape, bbox_masks.shape)
     cls_preds = cls_preds.to(device)
@@ -58,6 +57,7 @@ if __name__ == '__main__':
             # 根据类别和偏移量的预测和标注计算损失函数
             cls_preds = cls_preds.reshape(-1, 2)
             cls_labels = cls_labels.reshape(-1)
+            print(cls_preds.shape, cls_labels.shape)
             cls_loss, bbox_loss = calc_loss(cls_preds, cls_labels, bbox_preds, bbox_labels, bbox_masks)
             l = cls_loss + bbox_loss
             optimizer.zero_grad()
