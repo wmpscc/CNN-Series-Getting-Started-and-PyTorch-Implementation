@@ -1,4 +1,3 @@
-import sys
 import torch
 import torchvision
 from torch import nn, optim
