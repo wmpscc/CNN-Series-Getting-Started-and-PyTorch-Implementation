@@ -16,7 +16,6 @@ if __name__ == '__main__':
     teacherNet.train(mode=False)
     teacherNet = teacherNet.to(device)
 
-
     studentNet = Student2Net(classes=10)
     studentNet.load_state_dict(torch.load("./studentNet-ST.pth"))
     studentNet = studentNet.to(device)
@@ -42,7 +41,7 @@ if __name__ == '__main__':
             y_teacher = teacherNet(X)
             loss_teacher = lossKD(F.log_softmax(y_student / T, dim=1),
                                   F.softmax(y_teacher / T, dim=1))
-            loss = lambda_stu* loss_student + (1 - lambda_stu) * T * T * loss_teacher
+            loss = lambda_stu * loss_student + (1 - lambda_stu) * T * T * loss_teacher
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()

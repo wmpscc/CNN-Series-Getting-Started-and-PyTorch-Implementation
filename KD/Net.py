@@ -1,8 +1,5 @@
 import torch
-import torchvision
-from torch import nn, optim
-from utils import load_data_fashion_mnist, evaluate_accuracy
-import time
+from torch import nn
 from torchex import nn as exnn
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -69,6 +66,7 @@ class StudentNet(nn.Module):
     def forward(self, X):
         tmp = self.conv(X)
         return self.fc(tmp)
+
 
 class Student2Net(nn.Module):
     def __init__(self, classes):

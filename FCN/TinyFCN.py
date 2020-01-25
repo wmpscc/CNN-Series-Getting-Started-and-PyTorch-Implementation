@@ -3,7 +3,6 @@ from tqdm import tqdm
 from FCN.VOC2012Dataset import VOC2012SegDataIter
 import torch
 from torch import nn, optim
-from torch.nn import functional as F
 import numpy as np
 from torchvision import models
 
@@ -24,28 +23,29 @@ def bilinear_kernel(in_channels, out_channels, kernel_size):
     weight = np.zeros((in_channels, out_channels, kernel_size, kernel_size),
                       dtype='float32')
     weight[range(in_channels), range(out_channels), :, :] = filt
-    print(weight.shape)
     return torch.tensor(weight)
 
 
 if __name__ == '__main__':
-    train_iter, val_iter = VOC2012SegDataIter(16, (320, 480), 2, 200)
+    batch_size = 4
+    train_iter, val_iter = VOC2012SegDataIter(batch_size, (320, 480), 2, 200)
+
     resnet18 = models.resnet18(pretrained=True)
-    resnet18_modules = [layer for layer in resnet18.modules()]
+    resnet18_modules = [layer for layer in resnet18.children()]
     net = nn.Sequential()
     for i, layer in enumerate(resnet18_modules[:-2]):
         net.add_module(str(i), layer)
 
-        # print(layer)
     net.add_module("LinearTranspose", nn.Conv2d(512, num_classes, kernel_size=1))
     net.add_module("ConvTranspose2d",
                    nn.ConvTranspose2d(num_classes, num_classes, kernel_size=64, padding=16, stride=32))
 
     net[-1].weight = nn.Parameter(bilinear_kernel(num_classes, num_classes, 64), True)
     net[-2].weight = nn.init.xavier_uniform_(net[-2].weight)
+
     net = net.to(device)
     optimizer = optim.Adam(net.parameters(), lr=1e-3)
-    lossFN = nn.CrossEntropyLoss()
+    lossFN = nn.BCEWithLogitsLoss()
 
     num_epochs = 10
     for epoch in range(num_epochs):
@@ -54,10 +54,8 @@ if __name__ == '__main__':
         batch_count = 0
         n = 0
         for X, y in tqdm(train_iter):
-            print(X.shape)
             X = X.to(device)
             y = y.to(device)
-
             y_pred = net(X)
             loss = lossFN(y_pred, y)
 
@@ -66,9 +64,6 @@ if __name__ == '__main__':
             optimizer.step()
 
             sum_loss += loss.cpu().item()
-            sum_acc += (y_pred.argmax(dim=1) == y).sum().cpu().item()
             n += y.shape[0]
             batch_count += 1
-        print("epoch %d: loss=%.4f \t acc=%.4f" % (epoch + 1, sum_loss / n, sum_acc / n))
-
-
+        print("epoch %d: loss=%.4f" % (epoch + 1, sum_loss / n))

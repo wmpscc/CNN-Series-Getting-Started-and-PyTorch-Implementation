@@ -48,6 +48,8 @@ def cross_entropy2d(input, target, weight=None, size_average=True):
 if __name__ == '__main__':
     batch_size = 4
     train_iter, val_iter = VOC2012SegDataIter(batch_size, (320, 480), 2, 200)
+
+
     resnet18 = models.resnet18(pretrained=True)
     resnet18_modules = [layer for layer in resnet18.children()]
     net = nn.Sequential()
@@ -61,9 +63,10 @@ if __name__ == '__main__':
     net[-1].weight = nn.Parameter(bilinear_kernel(num_classes, num_classes, 64), True)
     net[-2].weight = nn.init.xavier_uniform_(net[-2].weight)
 
+
     net = net.to(device)
     optimizer = optim.Adam(net.parameters(), lr=1e-3)
-    lossFN = nn.CrossEntropyLoss()
+    lossFN = nn.BCEWithLogitsLoss()
 
     num_epochs = 10
     for epoch in range(num_epochs):
@@ -74,18 +77,14 @@ if __name__ == '__main__':
         for X, y in tqdm(train_iter):
             X = X.to(device)
             y = y.to(device)
-            y_pred = net(X).reshape((batch_size, 21, -1))
-            y = y.reshape(batch_size, -1)
-            print(y_pred.shape, y.shape)
+            y_pred = net(X)
             loss = lossFN(y_pred, y)
-            # loss = cross_entropy2d(y_pred, y)
 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
             sum_loss += loss.cpu().item()
-            sum_acc += (y_pred.argmax(dim=1) == y).sum().cpu().item()
             n += y.shape[0]
             batch_count += 1
-        print("epoch %d: loss=%.4f \t acc=%.4f" % (epoch + 1, sum_loss / n, sum_acc / n))
+        print("epoch %d: loss=%.4f" % (epoch + 1, sum_loss / n))

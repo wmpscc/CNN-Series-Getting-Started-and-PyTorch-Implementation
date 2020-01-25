@@ -72,9 +72,15 @@ class VOCSegDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         feature, label = voc_rand_crop(self.features[idx], self.labels[idx],
                                        *self.crop_size)
+        label = voc_label_indices(label, self.colormap2label).numpy().astype('uint8')
 
-        return (self.tsf(feature),
-                voc_label_indices(label, self.colormap2label))
+        # 统一GT
+        h, w = label.shape
+        target = torch.zeros(21, h, w)
+        for c in range(21):
+            target[c][label == c] = 1
+
+        return (self.tsf(feature), target)
 
     def __len__(self):
         return len(self.features)

@@ -6,8 +6,6 @@ from utils import evaluate_accuracy
 from tqdm import tqdm
 from KD.Net import TeacherNet, StudentNet, Student2Net
 
-
-
 if __name__ == '__main__':
     INPUT_SIZE = 112
     BATCH_SIZE = 32
