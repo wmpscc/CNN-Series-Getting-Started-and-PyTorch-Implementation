@@ -3,4 +3,4 @@ opencv_python==4.2.0.32
 tqdm==4.41.1
 numpy==1.18.0
 torchvision==0.4.2
-ipython==7.11.1
+ipython==7.16.3
